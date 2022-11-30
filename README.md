@@ -6,17 +6,23 @@ This example comes from the following [official azureml example](https://github.
 
 ## Note 
 
+### Public vs Private pipeline
+
+There is **one unique** difference between a public and a secure pipeline from a code perspective : you edit the github pipeline and set "self-hosted" instead of "ubuntu-latest" as the value of "runs-on:".
+
+Aside that, you obviously need to set up your self-hosted runner in Azure and register it to GitHub.
+
 ### Hosted runners
 
-For Github to be able to reach out to a private VNET that contains your AML workspace, you need to set up a self hosted runner into the VNET, or a VNET peered to it.
+For Github to be able to reach out to a private VNET that contains your AML workspace, you need to set up a [self-hosted runner](https://docs.github.com/en/actions/hosting-your-own-runners/about-self-hosted-runners) into the VNET, or a VNET peered to it.
 There are multiple ways to implement a Github runner : 
-    - You can set up a VM in Azure
-    - you can set up a container in Azure, either in Azure Container Instance or in AKS
+- You can set up a VM in Azure
+- you can set up a container in Azure, either in Azure Container Instance or in AKS
 AKS is a bit overkill for this example. 
 Azure Container instance is the next best thing as it can be cheaper than a VM and dockerfile are easy to read to understand what's going on.
 For this reason, this code example will use a docker container on Azure Container Instance as a github self-hosted runner.
 
-Note : From a network perspective, the runner will initiate the connection to Github, there is no inbound traffic to open. Outbound traffic to github is HTTPS.
+Note : From a [network perspective](https://docs.github.com/en/actions/hosting-your-own-runners/about-self-hosted-runners#communication-between-self-hosted-runners-and-github), the runner will initiate the connection to Github, there is no inbound traffic to open. Outbound traffic to github is HTTPS.
 
 ### Authentication
 
@@ -29,13 +35,7 @@ There are multiple ways for Github runner to authenticate so that it can run act
 Managed identity is quite nice but to my opinion App registration with federated credentials is a bit more secure as it set up an additionnal security to tie the runner to a specific Github repository. 
 For this reason, this code example will use App registration with federated credentials.
 
-### Public vs Private pipeline
-
-There is **one unique** difference between a public and a secure pipeline from a code perspective : you edit the github pipeline and set "self-hosted" instead of "ubuntu-latest" as the value of "runs-on:".
-
-Aside that, you obviously need to set up your self-hosted runner in Azure and register it to GitHub.
-
-## Prerequisites
+## Step By Step
 
 1. Have a secure AML workspace running in Azure
 1. have a compute cluster available called "cpu-cluster" (or change the pipeline.yml to match the name of your cluster)
