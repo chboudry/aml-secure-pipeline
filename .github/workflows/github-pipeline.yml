@@ -1,0 +1,25 @@
+name: github-pipeline
+permissions:
+  id-token: write
+  contents: read
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        client-id: ${{secrets.CLIENT_ID}}
+        tenant-id: ${{secrets.TENANT_ID}}
+        subscription-id: ${{secrets.SUBSCRIPTION_ID}}
+    - name: setup
+      run: bash setup.sh
+      working-directory: cli
+      continue-on-error: true
+    - name: run job
+      run: bash -x ../../../run-job.sh pipeline.yml
+      working-directory: cli/jobs/pipelines/nyc-taxi
