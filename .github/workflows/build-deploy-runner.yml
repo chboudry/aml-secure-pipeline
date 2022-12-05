@@ -62,4 +62,4 @@ jobs:
           # Password to log in Container Image Registry Server
           registry-password: ${{ secrets.ACR_PASSWORD }}
           # secure-environment-variables: # optional, default is 
-          # secure-environment-variables: GITHUB_TOKEN=${{ secrets.GIT_PAT }}
+          secure-environment-variables: GITHUB_TOKEN=${{ secrets.GIT_PAT }}
