@@ -71,6 +71,8 @@ Next steps are to build and run the self hosted runner in a Azure Container Inst
    - ACR_PASSWORD : ACR creds
 1. Run workflow "Build and Deploy GH Runner on ACI" from Github UI.
 1. At the end of the run, you should be able to see the self hosted runner registred on Github.
+![SelfHostedRunner](docs/SelfHostedRunner.png)
+
 
 Next steps are to trigger the ML pipeline from Github: 
 1. Ideally those next steps should be split from previous infra repo and Actions so you shold redefine a app registration with permissions limited to AML topics.
