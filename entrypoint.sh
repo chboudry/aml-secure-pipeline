@@ -5,30 +5,6 @@ function error {
     echo "Error; $1"
 }
 
-function getRegistrationToken {
-    if [[ -z GITHUB_TOKEN ]]; then
-        error "A GITHUB_TOKEN environment variable is required to register the actions runner with the repository or organization."
-        exit 1
-    else
-        # Get a short lived token to register the actions runner
-        echo "Getting registration token for runner..."
-
-        if [[ -z $SCOPE ]]; then
-            error "Was not able to identify SCOPE for the token"
-            exit 1
-        fi
-
-        if [[ ${SCOPE} == "enterprises" ]]; then
-            URL_PATH="$(echo "${RUNNER_URL}" | grep / | cut -d/ -f5-)"
-        else
-            # Get the path to the organization or repository
-            URL_PATH="$(echo "${RUNNER_URL}" | grep / | cut -d/ -f4-)"
-        fi
-        TOKEN_URL="https://api.github.com/${SCOPE}/${URL_PATH}/actions/runners/registration-token"
-        TOKEN="$(curl -X POST -fsSL -H "Authorization: token ${GITHUB_TOKEN}" ${TOKEN_URL} | jq -r .token)"
-    fi
-}
-
 RUNNER_OPTIONS=""
 SCOPE=""
 TOKEN=RUNNERTOKEN
