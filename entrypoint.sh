@@ -7,7 +7,7 @@ function error {
 
 RUNNER_OPTIONS=""
 SCOPE=""
-TOKEN=RUNNERTOKEN
+RUNNERTOKEN=""
 
 if [[ -z $RUNNER_NAME ]]; then
     echo "Using hostname for Actions Runner Name."
@@ -46,7 +46,7 @@ GROUP=${RUNNER_GROUP:-"default"}
 echo "Configuring GitHub Actions Runner and registering"
 ./config.sh --unattended \
     --url "${RUNNER_URL}" \
-    --token "${TOKEN}" \
+    --token "${RUNNERTOKEN}" \
     --name "${RUNNER_NAME}" \
     --work ${RUNNER_WORK_DIRECTORY} \
     --runnergroup ${GROUP} \
