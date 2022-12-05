@@ -1,12 +1,12 @@
 # aml-secure-pipeline
 
-Minimalistic example on how to trigger a AML pipeline from a Github pipeline, but with the specifics to allow it to run on a secure AML workspace.
+Example on how to trigger a AML pipeline from a Github pipeline, but with the specifics to allow it to run on a secure AML workspace.
 
-This example comes from the following [official azureml example](https://github.com/Azure/azureml-examples/blob/main/.github/workflows/cli-jobs-pipelines-nyc-taxi-pipeline.yml) but I removed all the unecessary bits that we do not use.
+We will use an Azure Container Instance to host the runner.
 
 ## Note 
 
-### Public vs Private pipeline
+### Public vs Private Github Pipeline
 
 There is **one unique** difference between a public and a secure pipeline from a code perspective : you edit the github pipeline and set "self-hosted" instead of "ubuntu-latest" as the value of "runs-on:".
 
@@ -18,11 +18,13 @@ For Github to be able to reach out to a private VNET that contains your AML work
 There are multiple ways to implement a Github runner : 
 - You can set up a VM in Azure
 - you can set up a container in Azure, either in Azure Container Instance or in AKS
-AKS is a bit overkill for this example. 
-Azure Container instance is the next best thing as it can be cheaper than a VM and dockerfile are easy to read to understand what's going on.
-For this reason, this code example will use a docker container on Azure Container Instance as a github self-hosted runner.
 
-Note : From a [network perspective](https://docs.github.com/en/actions/hosting-your-own-runners/about-self-hosted-runners#communication-between-self-hosted-runners-and-github), the runner will initiate the connection to Github, there is no inbound traffic to open. Outbound traffic to github is HTTPS.
+From a [network perspective](https://docs.github.com/en/actions/hosting-your-own-runners/about-self-hosted-runners#communication-between-self-hosted-runners-and-github), the runner will initiate the connection to Github, there is no inbound traffic to open. Outbound traffic to github is HTTPS.
+
+To build the docker image, you can either :
+- Use internal build function within a public Azure Container registry
+- Use dedicated agent pool (preview) within a private ACR
+- Build the container as part of a GH pipeline on a GH runner and push it to a public ACR
 
 ### Authentication
 
@@ -34,6 +36,14 @@ There are multiple ways for Github runner to authenticate so that it can run act
 
 Managed identity is quite nice but to my opinion App registration with federated credentials is a bit more secure as it set up an additionnal security to tie the runner to a specific Github repository. 
 For this reason, this code example will use App registration with federated credentials.
+
+### Diagram
+
+![architecture-schema](docs/architectureschema.png)
+
+1. The self-hosted runner opens a HTTPS channel to Github.
+1. A Github pipeline targetting the self hosted runner is triggered.
+1. The self-hosted runner runs the pipeline locally and cli commands can access the secure AML workspace.
 
 ## Step By Step
 

@@ -1,0 +1,60 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Build and Deploy GH Runner on ACI
+
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+  
+env:
+  IMAGE_NAME: runner
+  IMAGE_TAG: ${{ github.run_number }}
+  RUNNER_REPOSITORY_URL: https://github.com/chboudry/aml-secure-pipeline
+  RESOURCE_GROUP: ${{secrets.RG_NAME}}
+  LOCATION: ${{secrets.LOCATION}}
+  
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      
+      # Build and Push image to Azure Container Registry
+      - name: Build and Push to ACR
+        run: | 
+          docker build . -t ${{ secrets.ACR_SERVER }}/$IMAGE_NAME:$IMAGE_TAG
+      - name: Login to ACR 
+        run:  docker login ${{ secrets.ACR_SERVER }} -u ${{ secrets.ACR_USER }} -p ${{ secrets.ACR_PASSWORD }} 
+      - name: Push to ACR
+        run: |
+          docker push ${{ secrets.ACR_SERVER }}/$IMAGE_NAME:$IMAGE_TAG
+      # Login to Azure using Service Principal
+      - name: Azure Login
+        uses: Azure/login@v1
+        with:
+          # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      # Deploy an Azure Container Instance
+      - name: Deploy to Azure Container Instances
+        uses: Azure/aci-deploy@v1
+        with:
+          # Name of the Resource Group in which the Container Instance will be created
+          resource-group: ${{ env.RESOURCE_GROUP }}
+          location: ${{ env.LOCATION }}
+          cpu: 2
+          dns-name-label: mmckeown7rg${{ github.run_number }}
+          # List of environment variables for the container. Space-seperated in "key=value" format
+          environment-variables: RUNNER_REPOSITORY_URL=${{ env.RUNNER_REPOSITORY_URL }}
+          image: ${{ SECRETS.ACR_SERVER }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+          # Name of the Container Group Instance
+          name: actions-runner
+          registry-login-server: ${{ SECRETS.ACR_SERVER }}
+          # Username to log in Container Image Registry Server
+          registry-username: ${{ secrets.ACR_USER }}
+          # Password to log in Container Image Registry Server
+          registry-password: ${{ secrets.ACR_PASSWORD }}
+          # secure-environment-variables: # optional, default is 
+          secure-environment-variables: GITHUB_TOKEN=${{ secrets.GIT_PAT }}
