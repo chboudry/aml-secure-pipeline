@@ -58,4 +58,4 @@ env -i ./runsvc.sh
 # Deregister
 #echo Cleaning up runner registration...
 #getRegistrationToken
-./config.sh remove --token "${TOKEN}"
+#./config.sh remove --token "${TOKEN}"
