@@ -31,7 +31,7 @@ function getRegistrationToken {
 
 RUNNER_OPTIONS=""
 SCOPE=""
-TOKEN=""
+TOKEN=RUNNERTOKEN
 
 if [[ -z $RUNNER_NAME ]]; then
     echo "Using hostname for Actions Runner Name."
@@ -64,8 +64,8 @@ fi
 # The runner group that the self-hosted runner will be registered with
 GROUP=${RUNNER_GROUP:-"default"}
 
-echo "Getting temporary access token for registering"
-getRegistrationToken
+#echo "Getting temporary access token for registering"
+#getRegistrationToken
 
 echo "Configuring GitHub Actions Runner and registering"
 ./config.sh --unattended \
@@ -80,6 +80,6 @@ echo "Starting GitHub Actions Runner"
 env -i ./runsvc.sh
 
 # Deregister
-echo Cleaning up runner registration...
-getRegistrationToken
+#echo Cleaning up runner registration...
+#getRegistrationToken
 ./config.sh remove --token "${TOKEN}"
