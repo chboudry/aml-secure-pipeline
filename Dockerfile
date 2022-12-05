@@ -16,6 +16,9 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
     apt-transport-https \
     ca-certificates \
+    apt-transport-https \
+    lsb-release \
+    gnupg \
     curl \
     git \
     gnupg \
@@ -34,6 +37,14 @@ RUN apt-get update \
 RUN useradd -m actions
 RUN mkdir -p /home/actions ${AGENT_TOOLS_DIRECTORY}
 WORKDIR /home/actions
+
+#install az cli
+RUN curl -sL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/microsoft.gpg > /dev/null
+RUN AZ_REPO=$(lsb_release -cs) 
+RUN echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $AZ_REPO main" |
+RUN sudo tee /etc/apt/sources.list.d/azure-cli.list
+RUN sudo apt-get update
+RUN sudo apt-get install azure-cli
 
 # Download the specified version of the GH runner for Linux
 RUN curl -L -O https://github.com/actions/runner/releases/download/v${GH_RUNNER_VERSION}/actions-runner-linux-x64-${GH_RUNNER_VERSION}.tar.gz \
