@@ -55,6 +55,7 @@ This example assume you already set up the following prerequisites :
 1. A secure AML workspace running in Azure
 1. A compute cluster available called "cpu-cluster" (or change the pipeline.yml to match the name of your cluster)
 1. A public azure Container registry
+1. A vnet + subnet where ACI will be deployed, must be within the same VNET of AML or peered to it.
 
 Next steps are to build and run the self hosted runner in a Azure Container Instance: 
 1. [Create an app registration within Azure AD with OpenID Connect](https://learn.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-portal%2Cwindows#use-the-azure-login-action-with-openid-connect)
@@ -69,6 +70,8 @@ Next steps are to build and run the self hosted runner in a Azure Container Inst
    - ACR_SERVER : ACR creds
    - ACR_USER : ACR creds
    - ACR_PASSWORD : ACR creds
+   - ACI_VNET : VNET where ACI will be created, must exists already
+   - ACI_SUBNET : Subnet where ACI will be created, must exists already
 1. Run workflow "Build and Deploy GH Runner on ACI" from Github UI.
 1. At the end of the run, you should be able to see the self hosted runner registred on Github.
 ![SelfHostedRunner](docs/SelfHostedRunner.png)
