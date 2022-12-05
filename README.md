@@ -52,7 +52,7 @@ This example assume you already set up the following prerequisites :
 1. A compute cluster available called "cpu-cluster" (or change the pipeline.yml to match the name of your cluster)
 1. A public azure Container registry
 
-Next steps are to build and run the slef hosted runner in a Azure Container Instance: 
+Next steps are to build and run the self hosted runner in a Azure Container Instance: 
 1. [Create an app registration within Azure AD with OpenID Connect](https://learn.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-portal%2Cwindows#use-the-azure-login-action-with-openid-connect)
 1. On the resource group the ACI is going to be, provide RBAC contributor permission to the app registration
 1. Define the following secrets in Github that are going to be use by Build and RUN ACI pipeline:  
@@ -65,12 +65,15 @@ Next steps are to build and run the slef hosted runner in a Azure Container Inst
    - ACR_SERVER
    - ACR_USER
    - ACR_PASSWORD
-1. Run the workflow trough Github UI.
+1. Run workflow "Build and Deploy GH Runner on ACI" from Github UI.
 
 Next steps are to trigger the ML pipeline from Github: 
+1. Ideally those next steps should be split from previous infra repo and Actions so you shold redefine a app registration with permissions limited to AML topics.
 1. Define the following secrets in Github that are going to be use by Build and RUN ACI pipeline:  
    - CLIENT_ID : the app registration client ID
    - TENANT_ID : your tenant ID
    - SUBSCRIPTION_ID : your subscription ID
    - LOCATION
    - RG_NAME_ML
+   - WORKSPACE_NAME
+1. Run workflow "Trigger ML Pipeline" from Github UI.
