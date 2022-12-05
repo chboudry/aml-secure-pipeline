@@ -26,6 +26,10 @@ To build the docker image, you can either :
 - Use dedicated agent pool (preview) within a private ACR
 - Build the container as part of a GH pipeline on a GH runner and push it to a public ACR
 
+In this example I will build the image on a Github pipeline.
+I choose to use the runner token as github secrets but you may find some interesting other example such as : 
+https://github.com/charlenemckeown/github-runner-aci : using a PAT to token to access the token runner API
+
 ### Authentication
 
 There are multiple ways for Github runner to authenticate so that it can run actions in Azure : 
@@ -66,6 +70,7 @@ Next steps are to build and run the self hosted runner in a Azure Container Inst
    - ACR_USER : ACR creds
    - ACR_PASSWORD : ACR creds
 1. Run workflow "Build and Deploy GH Runner on ACI" from Github UI.
+1. At the end of the run, you should be able to see the self hosted runner registred on Github.
 
 Next steps are to trigger the ML pipeline from Github: 
 1. Ideally those next steps should be split from previous infra repo and Actions so you shold redefine a app registration with permissions limited to AML topics.
