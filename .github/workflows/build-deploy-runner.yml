@@ -50,7 +50,7 @@ jobs:
           resource-group: ${{ env.RESOURCE_GROUP }}
           location: ${{ env.LOCATION }}
           cpu: 2
-          dns-name-label: mmckeown7rg${{ github.run_number }}
+          dns-name-label: chbou45rg${{ github.run_number }}
           # List of environment variables for the container. Space-seperated in "key=value" format
           environment-variables: RUNNER_REPOSITORY_URL=${{ env.RUNNER_REPOSITORY_URL }}
           image: ${{ SECRETS.ACR_SERVER }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
@@ -62,4 +62,4 @@ jobs:
           # Password to log in Container Image Registry Server
           registry-password: ${{ secrets.ACR_PASSWORD }}
           # secure-environment-variables: # optional, default is 
-          secure-environment-variables: GITHUB_TOKEN=${{ secrets.GIT_PAT }}
+          # secure-environment-variables: GITHUB_TOKEN=${{ secrets.GIT_PAT }}
