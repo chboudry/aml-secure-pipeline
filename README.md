@@ -47,17 +47,30 @@ For this reason, this code example will use App registration with federated cred
 
 ## Step By Step
 
-1. Have a secure AML workspace running in Azure
-1. have a compute cluster available called "cpu-cluster" (or change the pipeline.yml to match the name of your cluster)
+This example assume you already set up the following prerequisites :
+1. A secure AML workspace running in Azure
+1. A compute cluster available called "cpu-cluster" (or change the pipeline.yml to match the name of your cluster)
+1. A public azure Container registry
+
+Next steps are to build and run the slef hosted runner in a Azure Container Instance: 
 1. [Create an app registration within Azure AD with OpenID Connect](https://learn.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-portal%2Cwindows#use-the-azure-login-action-with-openid-connect)
-1. On the resource group the ML workspace is, provide RBAC contributor permission to the app registration (you can reduce permissions depending on your use case)
-1. Define the following secrets in Github that are going to be use by the Github pipeline to authenticate: 
+1. On the resource group the ACI is going to be, provide RBAC contributor permission to the app registration
+1. Define the following secrets in Github that are going to be use by Build and RUN ACI pipeline:  
    - CLIENT_ID : the app registration client ID
    - TENANT_ID : your tenant ID
    - SUBSCRIPTION_ID : your subscription ID
-1. Define the following secrets in Github that are going to be use by the setup.sh script: 
-   - RG_NAME
+   - RUNNERTOKEN
    - LOCATION
-   - WORKSPACE_NAME
+   - RG_NAME_ACI
+   - ACR_SERVER
+   - ACR_USER
+   - ACR_PASSWORD
 1. Run the workflow trough Github UI.
 
+Next steps are to trigger the ML pipeline from Github: 
+1. Define the following secrets in Github that are going to be use by Build and RUN ACI pipeline:  
+   - CLIENT_ID : the app registration client ID
+   - TENANT_ID : your tenant ID
+   - SUBSCRIPTION_ID : your subscription ID
+   - LOCATION
+   - RG_NAME_ML
