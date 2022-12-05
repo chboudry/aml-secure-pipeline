@@ -7,7 +7,6 @@ function error {
 
 RUNNER_OPTIONS=""
 SCOPE=""
-RUNNERTOKEN=""
 
 if [[ -z $RUNNER_NAME ]]; then
     echo "Using hostname for Actions Runner Name."
