@@ -1,4 +1,4 @@
-name: github-pipeline
+name: Trigger ML Pipeline
 permissions:
   id-token: write
   contents: read
