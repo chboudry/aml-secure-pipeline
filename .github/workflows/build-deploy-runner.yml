@@ -10,8 +10,8 @@ on:
   
 env:
   IMAGE_NAME: runner
-  IMAGE_TAG: ${{ github.run_number }}
-  RUNNER_REPOSITORY_URL: https://github.com/chboudry/aml-secure-pipeline
+  IMAGE_TAG: ${{github.run_number}}
+  RUNNER_REPOSITORY_URL: ${{github.repositoryUrl}}
   RESOURCE_GROUP: ${{secrets.RG_NAME}}
   LOCATION: ${{secrets.LOCATION}}
   
