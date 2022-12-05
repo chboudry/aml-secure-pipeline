@@ -59,12 +59,12 @@ Next steps are to build and run the self hosted runner in a Azure Container Inst
    - CLIENT_ID : the app registration client ID
    - TENANT_ID : your tenant ID
    - SUBSCRIPTION_ID : your subscription ID
-   - RUNNERTOKEN
-   - LOCATION
-   - RG_NAME_ACI
-   - ACR_SERVER
-   - ACR_USER
-   - ACR_PASSWORD
+   - RUNNERTOKEN : a token to allow the new runner to connect to Github, should be available on  https://github.com/REPO/PROJECT/settings/actions/runners/new
+   - LOCATION : location where the ACI will be created
+   - RG_NAME_ACI : RG where the ACI will be created
+   - ACR_SERVER : ACR creds
+   - ACR_USER : ACR creds
+   - ACR_PASSWORD : ACR creds
 1. Run workflow "Build and Deploy GH Runner on ACI" from Github UI.
 
 Next steps are to trigger the ML pipeline from Github: 
