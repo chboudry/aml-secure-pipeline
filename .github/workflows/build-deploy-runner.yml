@@ -24,7 +24,7 @@ jobs:
       - uses: actions/checkout@v2
       
       # Build and Push image to Azure Container Registry
-      - name: Build and Push to ACR
+      - name: Build container
         run: | 
           docker build . -t ${{ secrets.ACR_SERVER }}/$IMAGE_NAME:$IMAGE_TAG
       - name: Login to ACR 
