@@ -42,6 +42,11 @@ WORKDIR /home/actions
 RUN apt remove azure-cli -y && apt autoremove -y
 RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 
+# install az cli ml extension
+RUN az extension remove -n azure-cli-ml
+RUN az extension remove -n ml
+RUN az extension add -n ml
+
 # Download the specified version of the GH runner for Linux
 RUN curl -L -O https://github.com/actions/runner/releases/download/v${GH_RUNNER_VERSION}/actions-runner-linux-x64-${GH_RUNNER_VERSION}.tar.gz \
     && tar -zxf actions-runner-linux-x64-${GH_RUNNER_VERSION}.tar.gz \
